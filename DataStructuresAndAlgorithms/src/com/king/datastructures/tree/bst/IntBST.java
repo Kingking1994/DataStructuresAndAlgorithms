@@ -212,4 +212,148 @@ public class IntBST {
 		}
 	}
 	
+	/**
+	 * 该遍历算法会破坏树的结构，所以只能遍历一次
+	 */
+	public void MorrisInorder(){
+		IntBSTNode p = root , tmp ;
+		while(p != null){
+			if(p.left == null){
+				visit(p);
+				p = p.right;
+			}
+			else{
+				tmp = p.left;
+				while(tmp.right != null && tmp.right != p){
+					tmp =tmp.right;
+				}
+				if(tmp.right == null){
+					tmp.right = p;
+					p = p.left;
+				}
+				else{
+					visit(p);
+					tmp.right = null;
+					p = p.right;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 归并删除法
+	 * @param el
+	 */
+	public void deleteByMerging(int el){
+		IntBSTNode tmp, node, p = root, prev = null;
+		while(p != null && p.key != el){                //找到要被删除的节点
+			prev = p;
+			if(p.key < el){
+				p = p.right;
+			}else{
+				p = p.left;
+			}
+		}
+		
+		node = p;//被删除的节点
+		
+		if(p != null && p.key == el){
+			if(node.right == null){//node没有右子节点的情况
+				node = node.left;
+			}
+			else if(node.left == null){//node没有左子节点的情况
+				node = node.right;
+			}
+			else{//node有两个节点的情况
+				
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>与deleteByCopying不同的地方				
+				tmp = node.left;
+				while(tmp.right != null){
+					tmp = tmp.right;
+				}
+				tmp.right = node.right;
+				node = node.left;
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+				
+			}
+			
+			if(p == root){//当被删除的节点为根节点时
+				root = node;
+			}
+			else if(prev.left == p){//当被删除的节点为左节点时
+				prev.left = node;
+			}
+			else{//当被删除的节点为右节点时
+				prev.right = node;
+			}
+		}
+		else if(root != null){
+			System.out.println("key " + el + "is not in the tree");
+		}
+		else{
+			System.out.println("the tree is empty");
+		}
+	}
+	
+	/**
+	 * 复制删除法
+	 * @param el
+	 */
+	public void deleteByCopying(int el){
+		IntBSTNode tmp, node, p = root, prev = null;
+		while(p != null && p.key != el){                //找到要被删除的节点
+			prev = p;
+			if(p.key < el){
+				p = p.right;
+			}else{
+				p = p.left;
+			}
+		}
+		
+		node = p;//被删除的节点
+		
+		if(p != null && p.key == el){
+			if(node.right == null){//node没有右子节点的情况
+				node = node.left;
+			}
+			else if(node.left == null){//node没有左子节点的情况
+				node = node.right;
+			}
+			else{//node有两个节点的情况
+				
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>与deleteByMerging不同的地方				
+				tmp = node.left;
+				IntBSTNode previous = node;
+				while(tmp.right != null){
+					previous = tmp;
+					tmp = tmp.right;
+				}
+				node.key = tmp.key;
+				if(previous == node){
+					previous.left = tmp.left;
+				}
+				else{
+					previous.right = tmp.right;
+				}
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
+				
+			}
+			
+			if(p == root){//当被删除的节点为根节点时
+				root = node;
+			}
+			else if(prev.left == p){//当被删除的节点为左节点时
+				prev.left = node;
+			}
+			else{//当被删除的节点为右节点时
+				prev.right = node;
+			}
+		}
+		else if(root != null){
+			System.out.println("key " + el + "is not in the tree");
+		}
+		else{
+			System.out.println("the tree is empty");
+		}
+	}
 }
