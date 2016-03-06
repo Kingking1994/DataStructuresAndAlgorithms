@@ -356,4 +356,29 @@ public class IntBST {
 			System.out.println("the tree is empty");
 		}
 	}
+	
+	/**
+	 * 树的平衡
+	 * 
+	 * @param data
+	 * @param first
+	 * @param last
+	 */
+	public void balance(int data[],int first , int last ){
+		if(first <= last){
+			int midlle = (first + last) / 2;
+			insert(data[midlle]);
+			balance(data, first, midlle -1);
+			balance(data ,midlle + 1, last);
+		}
+	}
+	
+	//DSW算法
+	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	
+	
+	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	
+	
+	
 }
